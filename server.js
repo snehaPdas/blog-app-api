@@ -11,7 +11,8 @@ const adminRoute = require("./Routes/adminAuthRoute");
 const app = express();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
 app.use(express.json());
