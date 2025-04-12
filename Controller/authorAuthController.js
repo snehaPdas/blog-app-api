@@ -1,6 +1,6 @@
-const Author = require("../Model/authorModel");
 const bcrypt = require("bcryptjs");
-const {User} = require('../Model/userModel')
+const User = require('../Model/userModel');
+const { generateAccessToken } = require("../utils/jwtService");
 
 const loginData = async (req, res) => {
   console.log("Reached at author login");
@@ -28,15 +28,14 @@ const loginData = async (req, res) => {
     }
 
     const payload = {
-      id: reader._id,
-      role: reader.role,
+      id: author._id,
+      role: author.role,
     };
 
     const accessToken = generateAccessToken(payload);
-    const refreshToken = generateRefreshToken(payload);
+    // const refreshToken = generateRefreshToken(payload);
 
-    setCookie(res, "author_access_token", accessToken);
-    setCookie(res, "author_refresh_token", refreshToken);
+    
 
     res.status(200).json({
       message: "Login successful",
@@ -45,6 +44,7 @@ const loginData = async (req, res) => {
         name: author.name,
         email: author.email,
       },
+      token: accessToken
     });
   } catch (err) {
     console.error(err);
